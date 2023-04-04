@@ -24,7 +24,10 @@ public class InstructorDetails {
 	@Column(name = "hobby")
 	private String hobby;
 	
-	@OneToOne(mappedBy = "instructorDetail",cascade = CascadeType.ALL) // mapping to instructorDetail variable to get bi directional relationship
+	// mapping to instructorDetail variable to get bi directional relationship
+//	@OneToOne(mappedBy = "instructorDetail",cascade = CascadeType.ALL) // changing both table on any change
+	@OneToOne(mappedBy = "instructorDetail", cascade = {CascadeType.DETACH, CascadeType.MERGE,
+												CascadeType.PERSIST, CascadeType.REFRESH}) // changing both table in every operation except remove
 	private Instructor instructor;
 
 	public InstructorDetails() {

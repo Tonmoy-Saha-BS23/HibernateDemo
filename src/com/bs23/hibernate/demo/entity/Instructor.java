@@ -7,8 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import java.util.*;
 
 @Entity
 @Table(name = "instructor")
@@ -31,6 +34,11 @@ public class Instructor {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "instructor_detail_id")
 	private InstructorDetails instructorDetail;
+	
+	@OneToMany(mappedBy = "instructor", 
+			cascade = {CascadeType.PERSIST, CascadeType.DETACH,
+			CascadeType.MERGE, CascadeType.REFRESH})
+	private List<Course> courses;
 	
 	public Instructor() {
 		
@@ -80,6 +88,26 @@ public class Instructor {
 
 	public void setInstructorDetail(InstructorDetails instructorDetail) {
 		this.instructorDetail = instructorDetail;
+	}
+	
+	
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+	
+	// adding a convenience methods for bi-directional relationship with instructor
+	public void add(Course tempCourse) {
+		if(courses == null) {
+			courses = new ArrayList<>();
+		}
+		courses.add(tempCourse);
+		
+		tempCourse.setInstructor(this);
 	}
 
 	@Override

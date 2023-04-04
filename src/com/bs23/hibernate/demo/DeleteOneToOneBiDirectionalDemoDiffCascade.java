@@ -10,7 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.*;
 
 
-public class OneToOneBiDirectionalDemo {
+public class DeleteOneToOneBiDirectionalDemoDiffCascade {
 	public static void main(String[] args) {
 		// Create a session Factory
 		SessionFactory sessionFactory = new Configuration()
@@ -36,12 +36,19 @@ public class OneToOneBiDirectionalDemo {
 				Instructor tempInstructor = tempDetails.getInstructor();
 				System.out.println("Instructor Details: " + tempInstructor);
 			}
+			// deleting the instructor details
+			System.out.println("Deleting the instructordetails of " + insId);
+			tempDetails.getInstructor().setInstructorDetail(null);
+			session.delete(tempDetails);
+			
 			session.getTransaction().commit();
+			System.out.println("Done!");
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			session.close();
+			sessionFactory.close();
 		}
 	}
 }
