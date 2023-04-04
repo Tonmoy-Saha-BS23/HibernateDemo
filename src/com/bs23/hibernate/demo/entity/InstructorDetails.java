@@ -1,10 +1,12 @@
 package com.bs23.hibernate.demo.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +23,9 @@ public class InstructorDetails {
 	
 	@Column(name = "hobby")
 	private String hobby;
+	
+	@OneToOne(mappedBy = "instructorDetail",cascade = CascadeType.ALL) // mapping to instructorDetail variable to get bi directional relationship
+	private Instructor instructor;
 
 	public InstructorDetails() {
 		
@@ -53,6 +58,15 @@ public class InstructorDetails {
 
 	public void setHobby(String hobby) {
 		this.hobby = hobby;
+	}
+	
+	
+	public Instructor getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(Instructor instructor) {
+		this.instructor = instructor;
 	}
 
 	@Override
