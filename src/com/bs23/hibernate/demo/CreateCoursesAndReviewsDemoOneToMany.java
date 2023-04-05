@@ -5,14 +5,14 @@ import org.hibernate.cfg.Configuration;
 import com.bs23.hibernate.demo.entity.Course;
 import com.bs23.hibernate.demo.entity.Instructor;
 import com.bs23.hibernate.demo.entity.InstructorDetails;
-
+import com.bs23.hibernate.demo.entity.Review;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.*;
 
 
-public class CreateCoursesDemoOneToMany {
+public class CreateCoursesAndReviewsDemoOneToMany {
 	public static void main(String[] args) {
 		// Create a session Factory
 		SessionFactory sessionFactory = new Configuration()
@@ -20,6 +20,7 @@ public class CreateCoursesDemoOneToMany {
 										.addAnnotatedClass(InstructorDetails.class)
 										.addAnnotatedClass(Instructor.class)
 										.addAnnotatedClass(Course.class)
+										.addAnnotatedClass(Review.class)
 										.buildSessionFactory();
 		//create session
 		Session session = sessionFactory.getCurrentSession();
@@ -28,19 +29,17 @@ public class CreateCoursesDemoOneToMany {
 			// start the transaction
 			session.beginTransaction();
 			
-			int theId = 5;
-			Instructor tempInstructor = session.get(Instructor.class, theId);
-			// commit the transaction
+			Course tempCourse = new Course("How to be a programmer");
 			
-			Course course1 = new Course("Intro to Go");
-			Course course2 = new Course("Intro to Rust");
+			// add some reviews
+			tempCourse.addReview(new Review("Good course"));
+			tempCourse.addReview(new Review("Moderate course"));
 			
-			tempInstructor.add(course1);
-			tempInstructor.add(course2);
-			
-			session.save(course1);
-			session.save(course2);
-			
+			System.out.println("Saving the course");
+			System.out.println(tempCourse);
+			System.out.println(tempCourse.getReviews());
+			session.save(tempCourse);
+			// commit the session
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");

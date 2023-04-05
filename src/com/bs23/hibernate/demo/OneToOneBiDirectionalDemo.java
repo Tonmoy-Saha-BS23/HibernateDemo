@@ -24,7 +24,7 @@ public class OneToOneBiDirectionalDemo {
 		try {
 			// start the transaction
 			session.beginTransaction();
-			int insId = 3;
+			int insId = 5;
 			
 			// getting the instructor
 			InstructorDetails tempDetails = session.get(InstructorDetails.class, insId);

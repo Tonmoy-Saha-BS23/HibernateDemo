@@ -1,14 +1,20 @@
 package com.bs23.hibernate.demo.entity;
 
 import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -26,6 +32,10 @@ public class Course {
 						CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "instructor_id")
 	private Instructor instructor;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "course_id")
+	private List<Review> reviews;
 	
 	public Course() {
 		
@@ -57,6 +67,22 @@ public class Course {
 
 	public void setInstructor(Instructor instructor) {
 		this.instructor = instructor;
+	}
+	
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+	
+	public void addReview(Review theReview) {
+		if(reviews == null) {
+			reviews = new ArrayList<>();
+		}
+		reviews.add(theReview);
 	}
 
 	@Override
